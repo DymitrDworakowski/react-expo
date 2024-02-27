@@ -18,10 +18,19 @@ const Login = () => {
     const navigation = useNavigation();
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
+    const [deviceId, setDeviceId] = useState("");
+    const [appVersion, setAppVersion] = useState("");
     const [error, setError] = useState("");
 
     const auth = () => {
-        axios.post('http://bart.intersport.pl:33001/auth/token', { login, password })
+        const requestData = {
+            login,
+            password,
+            deviceId,
+            appVersion
+        };
+
+        axios.post('http://bart.intersport.pl:33001/auth/token', requestData)
         .then(response => {
             const { code, message, token, refreshToken, validTo, deviceConfirmationCode } = response.data;
             // Перевірка коду відповіді
@@ -64,6 +73,20 @@ const Login = () => {
                     secureTextEntry
                     value={password}
                     onChangeText={setPassword}
+                />
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="Device ID"
+                    value={deviceId}
+                    onChangeText={setDeviceId}
+                />
+
+                <TextInput
+                    style={styles.input}
+                    placeholder="App Version"
+                    value={appVersion}
+                    onChangeText={setAppVersion}
                 />
 
                 <Button
