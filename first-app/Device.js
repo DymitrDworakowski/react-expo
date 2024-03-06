@@ -14,29 +14,30 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 
-const Login = () => {
+const Device = () => {
   const navigation = useNavigation();
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [deviceId, setDeviceId] = useState("string");
-  const [appVersion, setAppVersion] = useState("string");
+  const [deviceAlias, setDeviceAlias] = useState("string");
+  const [platform, setPlatform] = useState("android");
   const [error, setError] = useState("");
 
-  const auth = () => {
+  const device = () => {
     const requestData = {
       login,
       password,
+      deviceAlias,
       deviceId,
-      appVersion,
+      platform,
     };
 
     axios
-      .post("http://bart.intersport.pl:33001/auth/token", requestData)
-      .then(response => {
-        console.log(response.data);
-       
-        navigation.navigate('Home');
-    })
+      .post("http://bart.intersport.pl:33001/auth/device", requestData)
+      .then((response) => {
+       console.log(response)
+       navigation.navigate("Login");
+      })
       .catch((error) => {
         console.error("Error fetching data:", error);
         setError("Error fetching data");
@@ -49,7 +50,7 @@ const Login = () => {
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.container}
       >
-        <Text>Login screen</Text>
+        <Text>Device screen</Text>
 
         <TextInput
           style={styles.input}
@@ -76,11 +77,17 @@ const Login = () => {
         <TextInput
           style={styles.input}
           placeholder="App Version"
-          value={appVersion}
-          onChangeText={setAppVersion}
+          value={deviceAlias}
+          onChangeText={setDeviceAlias}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="App Version"
+          value={platform}
+          onChangeText={setPlatform}
         />
 
-        <Button title="Login" onPress={auth} />
+        <Button title="Login device" onPress={device} />
 
         {error ? <Text style={styles.error}>{error}</Text> : null}
       </KeyboardAvoidingView>
@@ -109,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Device;
