@@ -5,6 +5,7 @@ import { Button } from 'react-native';
 import Login from "./Login";
 import Device from "./Device";
 import Home from "./Home";
+import Locations from "./Locations";
 
 const MainStack = createStackNavigator();
 
@@ -44,6 +45,7 @@ export default function App() {
         />
         <MainStack.Screen name="Home" component={Home} options={{title:'Start screen'}}/>
         <MainStack.Screen name="Device" component={Device} options={{title:'Device screen'}}/>
+        <MainStack.Screen name="Locations" component={Locations} options={{title:'Locations screen'}}/>
       </MainStack.Navigator>
     </NavigationContainer>
   );

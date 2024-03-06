@@ -35,7 +35,7 @@ const Device = () => {
     axios
       .post("http://bart.intersport.pl:33001/auth/device", requestData)
       .then((response) => {
-       console.log(response)
+      
        navigation.navigate("Login");
       })
       .catch((error) => {

@@ -16,8 +16,8 @@ import axios from "axios";
 
 const Login = () => {
   const navigation = useNavigation();
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+  const [login, setLogin] = useState("ams_dd");
+  const [password, setPassword] = useState("123Qwe");
   const [deviceId, setDeviceId] = useState("string");
   const [appVersion, setAppVersion] = useState("string");
   const [error, setError] = useState("");
@@ -33,9 +33,10 @@ const Login = () => {
     axios
       .post("http://bart.intersport.pl:33001/auth/token", requestData)
       .then(response => {
+        const token = response.data.token;
         console.log(response.data);
        
-        navigation.navigate('Home');
+        navigation.navigate('Locations',{ token });
     })
       .catch((error) => {
         console.error("Error fetching data:", error);
