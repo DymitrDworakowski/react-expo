@@ -26,7 +26,7 @@ const Locations = () => {
 
   const fetchSalons = () => {
     axios
-      .get("http://bart.intersport.pl:33001/auth/locations", {
+      .get("https://apps.intersport.pl/ams/api/v2/auth/locations", {
         headers: { Authorization: `Bearer ${token}` }, // Додавання токену до заголовків запиту
       })
       .then((response) => {

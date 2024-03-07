@@ -44,11 +44,10 @@ const ShopStuf = () => {
 
   const fetchStuf = () => {
     axios
-    .post("http://bart.intersport.pl:33000/product/list", requestData, {
-      headers: { Authorization: `Bearer ${token}` }, // Додавання токену до заголовків запиту
+    .post("https://apps.intersport.pl/ams/api/v2/product/list", requestData, {
+      headers: { Authorization: `Bearer ${token}` }, 
     })
       .then((response) => {
-        
         setSalonStuf(response.data.products);
       })
       .catch((error) => {
@@ -67,19 +66,23 @@ const ShopStuf = () => {
         <Text>{code}</Text>
         
         {salonStuf.length > 0 ? (
-  salonStuf.map(({ totalItems,products }) => (
-    <View >
-    {products.map(({ producer, idGood }) => (
-      <Text key={idGood}>
-        Producer: {producer}, idGood: {idGood}
+  salonStuf.map(({ producer, indexes, idGood }) => (
+    <View key={idGood}>
+      <Text>
+        Producer: {producer}
       </Text>
-    ))}
-  </View>
+      {indexes.map(({ price, ean, size, shortName, longName, stock }) => (
+        <View key={ean}>
+          <Text>
+            Price: {price.salePrice}, ID: {idGood}, EAN: {ean}, Size: {size}, Short Name: {shortName}, Long Name: {longName}, Stock: {stock.inSale}
+          </Text>
+        </View>
+      ))}
+    </View>
   ))
 ) : (
   <Text>Loading...</Text>
 )}
-          
         {error ? <Text style={styles.error}>{error}</Text> : null}
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>

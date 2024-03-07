@@ -31,7 +31,7 @@ const Login = () => {
     };
 
     axios
-      .post("http://bart.intersport.pl:33001/auth/token", requestData)
+      .post("https://apps.intersport.pl/ams/api/v2/auth/token", requestData)
       .then(response => {
         const token = response.data.token;
         console.log(response.data);
