@@ -50,7 +50,7 @@ const Login = () => {
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.container}
       >
-        <Text>Login screen</Text>
+        <Text>Login</Text>
 
         <TextInput
           style={styles.input}
@@ -67,7 +67,7 @@ const Login = () => {
           onChangeText={setPassword}
         />
 
-        <TextInput
+        {/* <TextInput
           style={styles.input}
           placeholder="Device ID"
           value={deviceId}
@@ -79,7 +79,7 @@ const Login = () => {
           placeholder="App Version"
           value={appVersion}
           onChangeText={setAppVersion}
-        />
+        /> */}
 
         <Button title="Login" onPress={auth} />
 
