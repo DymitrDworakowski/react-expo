@@ -20,6 +20,7 @@ const Locations = () => {
   const { token } = route.params; // Отримання токену з параметрів навігації
   const [salonsData, setSalonsData] = useState([]);
   const [error, setError] = useState("");
+  
   useEffect(() => {
     fetchSalons();
   }, []); // Виклик функції після завантаження компонента

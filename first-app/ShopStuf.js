@@ -19,7 +19,7 @@ const ShopStuf = () => {
   const { code,token} = route.params; // Отримання токену з параметрів навігації
   const [salonStuf, setSalonStuf] = useState([]);
   const [error, setError] = useState("");
-  console.log(salonStuf)
+
   useEffect(() => {
     setTimeout(() => {
       fetchStuf();
