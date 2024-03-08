@@ -17,7 +17,7 @@ import axios from "axios";
 const Login = () => {
   const navigation = useNavigation();
   const [login, setLogin] = useState("ams_dd");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("123Qwe");
   const [deviceId, setDeviceId] = useState("string");
   const [appVersion, setAppVersion] = useState("string");
   const [error, setError] = useState("");

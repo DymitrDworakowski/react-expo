@@ -16,22 +16,16 @@ import axios from "axios";
 const ShopStuf = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { code,token} = route.params; // Отримання токену з параметрів навігації
+  const { code, token } = route.params; // Отримання токену з параметрів навігації
   const [salonStuf, setSalonStuf] = useState([]);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    setTimeout(() => {
-      fetchStuf();
-    }, 2000);
-   
-  }, []); // Виклик функції після завантаження компонента
+  console.log(salonStuf);
 
   const requestData = {
     pageNo: 0,
     locationCode: code,
     availabilityType: "inSales",
-    withPhotos: true,
+    withPhotos: false,
     withActiveDiscounts: false,
     name: "",
     price: { from: 0, to: 0 },
@@ -41,12 +35,15 @@ const ShopStuf = () => {
     sexList: [],
     sizes: [],
   };
+  useEffect(() => {
+    fetchStuf();
+  }, []);
 
   const fetchStuf = () => {
     axios
-    .post("https://apps.intersport.pl/ams/api/v2/product/list", requestData, {
-      headers: { Authorization: `Bearer ${token}` }, 
-    })
+      .post("https://apps.intersport.pl/ams/api/v2/product/list", requestData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((response) => {
         setSalonStuf(response.data.products);
       })
@@ -58,35 +55,32 @@ const ShopStuf = () => {
 
   return (
     <ScrollView>
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-        style={styles.container}
-      >
-        <Text>{code}</Text>
-        
-        {salonStuf.length > 0 ? (
-  salonStuf.map(({ producer, indexes, idGood }) => (
-    <View key={idGood}>
-      <Text>
-        Producer: {producer}
-      </Text>
-      {indexes.map(({ price, ean, size, shortName, longName, stock }) => (
-        <View key={ean}>
-          <Text>
-            Price: {price.salePrice}, ID: {idGood}, EAN: {ean}, Size: {size}, Short Name: {shortName}, Long Name: {longName}, Stock: {stock.inSale}
-          </Text>
-        </View>
-      ))}
-    </View>
-  ))
-) : (
-  <Text>Loading...</Text>
-)}
-        {error ? <Text style={styles.error}>{error}</Text> : null}
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
-  </ScrollView>
+      <Text>{code}</Text>
+
+      {salonStuf.length > 0 ? (
+        salonStuf.map(({ idModCol, producer, indexes, category }) => (
+          <View key={idModCol}>
+            <Text>Producent: {producer}</Text>
+            {indexes.map(({ price, ean, size, shortName, longName, stock }) => (
+              <View key={ean}>
+                <Text>Nazwa: {shortName}</Text>
+                <Text>Kategoria: {category}</Text>
+                <Text>Cena: {price.salePrice}</Text>
+                <Text> EAN: {ean} </Text>
+                {size !== "" ? (<Text> Size:{size}</Text>):(
+                  <Text> Size: Niema rozmiaru </Text>
+                )}
+                <Text>Stany: {stock.inSale},</Text>
+                <Text>Stany {code}: {stock.inStore}</Text>
+              </View>
+            ))}
+          </View>
+        ))
+      ) : (
+        <Text>Loading...</Text>
+      )}
+      {error ? <Text style={styles.error}>{error}</Text> : null}
+    </ScrollView>
   );
 };
 
