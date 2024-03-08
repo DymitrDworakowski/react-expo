@@ -3,12 +3,11 @@ import { Image, Text } from "react-native";
 import axios from "axios";
 
 const Img = ({ idModCol, token }) => {
-  const [img, setImg] = useState(null); 
-  const [error, setError] = useState(null); 
-
+  const [img, setImg] = useState(null);
+  const [error, setError] = useState(null);
   const fetchImg = () => {
     axios
-      .get(`http://bart.intersport.pl:33002/photo/mainById/${idModCol}`, {
+      .get(`https://apps.intersport.pl/ams/api/v2/photo/mainById/${idModCol}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -33,11 +32,20 @@ const Img = ({ idModCol, token }) => {
   }
 
   return (
-    <Image
-      style={{ width: 100, height: 100 }} // Задайте потрібні розміри
-      source={{ uri: `data:image/jpeg;base64,${img.base64}` }} // Додайте тип зображення, якщо він відрізняється
-    />
+    <>
+      {img !== null ? (
+        <Image
+          key={img.id}
+          style={{ width: 100, height: 100 }}
+          source={{ uri: `data:image/jpeg;base64,${img.base64}` }}
+        />
+      ) : (
+        <Image
+          style={{ width: 100, height: 100 }}
+          source={{ uri: "./img/Z2000128430.jpg" }}
+        />
+      )}
+    </>
   );
 };
-
 export default Img;

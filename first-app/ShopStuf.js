@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, Text, View, StyleSheet } from "react-native";
+import { ScrollView, Text, View, StyleSheet, ActivityIndicator } from "react-native";
 import axios from "axios";
 import Img from "./Img";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -7,14 +7,14 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 const ShopStuf = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { code, token } = route.params; // Отримання токену з параметрів навігації
+  const { code, token } = route.params;
   const [salonStuf, setSalonStuf] = useState([]);
-
   const [error, setError] = useState("");
-  console.log(salonStuf);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0); // початкова сторінка
 
   const requestData = {
-    pageNo: 0,
+    pageNo: page, // використовуйте поточну сторінку
     locationCode: code,
     availabilityType: "inSales",
     withPhotos: false,
@@ -33,21 +33,33 @@ const ShopStuf = () => {
   }, []);
 
   const fetchStuf = () => {
+    setLoading(true);
     axios
       .post("https://apps.intersport.pl/ams/api/v2/product/list", requestData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        setSalonStuf(response.data.products);
+        setSalonStuf([...salonStuf, ...response.data.products]);
+        setLoading(false);
+        setPage((prewPage)=> prewPage + 1); // Після отримання даних оновіть сторінку
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
         setError("Error fetching data");
+        setLoading(false);
       });
   };
 
+  const handleScroll = (event) => {
+    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+    const isCloseToBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
+    if (isCloseToBottom && !loading) {
+      fetchStuf(); // завантажте нові дані, якщо користувач близько до кінця списку і не йде інше завантаження
+    }
+  };
+
   return (
-    <ScrollView>
+    <ScrollView onScroll={handleScroll} scrollEventThrottle={100}>
       <Text>{code}</Text>
 
       {salonStuf.length > 0 ? (
@@ -57,12 +69,14 @@ const ShopStuf = () => {
             <Text>Producent: {producer}</Text>
             {indexes.map(({ price, ean, size, shortName, stock }) => (
               <View key={ean}>
-                <Text>Nazwa: {shortName}</Text>
+                <Text>
+                  Nazwa: {shortName}, {idModCol}
+                </Text>
                 <Text>Kategoria: {category}</Text>
                 <Text>Cena: {price.salePrice}</Text>
                 <Text> EAN: {ean} </Text>
                 {size !== "" ? (
-                  <Text> Size:{size}</Text>
+                  <Text> Size: {size}</Text>
                 ) : (
                   <Text> Size: Brak rozmiaru </Text>
                 )}
@@ -75,9 +89,13 @@ const ShopStuf = () => {
           </View>
         ))
       ) : (
+        <View>
         <Text>Loading...</Text>
+        </View>
       )}
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+      
+      {loading && <ActivityIndicator style={styles.loadingIndicator} />}
+      {error && <Text style={styles.error}>{error}</Text>}
     </ScrollView>
   );
 };
@@ -99,6 +117,9 @@ const styles = StyleSheet.create({
   },
   error: {
     color: "red",
+    marginTop: 10,
+  },
+  loadingIndicator: {
     marginTop: 10,
   },
 });
