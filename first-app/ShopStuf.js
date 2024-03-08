@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { ScrollView, Text, View, StyleSheet } from "react-native";
 import axios from "axios";
+import Img from "./Img";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const ShopStuf = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { code, token } = route.params; // Отримання токену з параметрів навігації
   const [salonStuf, setSalonStuf] = useState([]);
+
   const [error, setError] = useState("");
   console.log(salonStuf);
 
@@ -35,6 +27,7 @@ const ShopStuf = () => {
     sexList: [],
     sizes: [],
   };
+
   useEffect(() => {
     fetchStuf();
   }, []);
@@ -60,18 +53,23 @@ const ShopStuf = () => {
       {salonStuf.length > 0 ? (
         salonStuf.map(({ idModCol, producer, indexes, category }) => (
           <View key={idModCol}>
+            <Img idModCol={idModCol} token={token} />
             <Text>Producent: {producer}</Text>
-            {indexes.map(({ price, ean, size, shortName, longName, stock }) => (
+            {indexes.map(({ price, ean, size, shortName, stock }) => (
               <View key={ean}>
                 <Text>Nazwa: {shortName}</Text>
                 <Text>Kategoria: {category}</Text>
                 <Text>Cena: {price.salePrice}</Text>
                 <Text> EAN: {ean} </Text>
-                {size !== "" ? (<Text> Size:{size}</Text>):(
-                  <Text> Size: Niema rozmiaru </Text>
+                {size !== "" ? (
+                  <Text> Size:{size}</Text>
+                ) : (
+                  <Text> Size: Brak rozmiaru </Text>
                 )}
                 <Text>Stany: {stock.inSale},</Text>
-                <Text>Stany {code}: {stock.inStore}</Text>
+                <Text>
+                  Stany {code}: {stock.inStore}
+                </Text>
               </View>
             ))}
           </View>
