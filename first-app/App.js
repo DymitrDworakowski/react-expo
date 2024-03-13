@@ -7,6 +7,7 @@ import Device from "./Device";
 import Home from "./Home";
 import Locations from "./Locations";
 import ShopStuf from "./ShopStuf";
+import Product from "./Product";
 const MainStack = createStackNavigator();
 
 const LoginScreen = () => {
@@ -43,10 +44,11 @@ export default function App() {
             }
           }}
         />
-        <MainStack.Screen name="Home" component={Home} options={{title:'Start screen'}}/>
+        <MainStack.Screen name="Home" component={Home} options={{title:'Logowanie'}}/>
         <MainStack.Screen name="Device" component={Device} options={{title:'Device screen'}}/>
-        <MainStack.Screen name="Locations" component={Locations} options={{title:'Locations screen'}}/>
-        <MainStack.Screen name="ShopStuf" component={ShopStuf} options={{title:'ShopStuf screen'}}/>
+        <MainStack.Screen name="Locations" component={Locations} options={{title:'Wybierz salon'}}/>
+        <MainStack.Screen name="ShopStuf" component={ShopStuf} options={{title:'Produkty'}}/>
+        <MainStack.Screen name="Product" component={Product} options={{title:'Product'}}/>
       </MainStack.Navigator>
     </NavigationContainer>
   );

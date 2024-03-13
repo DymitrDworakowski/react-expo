@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, Text, View, StyleSheet, ActivityIndicator } from "react-native";
+import { ScrollView, Text, View, StyleSheet, ActivityIndicator,TouchableOpacity } from "react-native";
 import axios from "axios";
 import Img from "./Img";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 const ShopStuf = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { code, token } = route.params;
+  const { code, token,name } = route.params;
   const [salonStuf, setSalonStuf] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -59,16 +59,21 @@ const ShopStuf = () => {
   };
 
   return (
-    <ScrollView onScroll={handleScroll} scrollEventThrottle={100}>
-      <Text>{code}</Text>
-
+    <View>
+    <Text style={styles.fixedText}>{code}  {name}</Text>
+    <ScrollView onScroll={handleScroll} scrollEventThrottle={300}>
+    
       {salonStuf.length > 0 ? (
         salonStuf.map(({ idModCol, producer, indexes, category }) => (
-          <View key={idModCol}>
+          <TouchableOpacity
+          key={idModCol}
+    onPress={() => navigation.navigate("Product", {idModCol, producer, indexes, category })}
+    >
+          <View  style={styles.container}>
             <Img idModCol={idModCol} token={token} />
             <Text>Producent: {producer}</Text>
             {indexes.map(({ price, ean, size, shortName, stock }) => (
-              <View key={ean}>
+              <View key={ean} style={styles.item}>
                 <Text>
                   Nazwa: {shortName}, {idModCol}
                 </Text>
@@ -87,6 +92,7 @@ const ShopStuf = () => {
               </View>
             ))}
           </View>
+          </TouchableOpacity>
         ))
       ) : (
         <View>
@@ -96,7 +102,9 @@ const ShopStuf = () => {
       
       {loading && <ActivityIndicator style={styles.loadingIndicator} />}
       {error && <Text style={styles.error}>{error}</Text>}
+      
     </ScrollView>
+    </View>
   );
 };
 
@@ -106,14 +114,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F5FCFF",
+    borderColor: "black", // Border color
+    borderWidth: 1, // Border width
   },
-  input: {
+  fixedText: {
+    backgroundColor : '#FFFFFF',
+  },
+  item: {
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 4,
     padding: 10,
     marginBottom: 10,
-    width: "80%",
+    width: "95%",
   },
   error: {
     color: "red",
