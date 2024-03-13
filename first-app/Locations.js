@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
 } from "react-native";
 
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -33,21 +34,21 @@ const Locations = () => {
         setError("Error fetching data");
       });
   };
-  // navigation.navigate('ShopStuf',{ locCode });
+
   return (
     <ScrollView style={styles.scrollView}>
-          <Text style={styles.heading}>Sklepy</Text>
-          {salonsData.map(({ code, name }) => (
-            <TouchableOpacity
-              key={code}
-              onPress={() => navigation.navigate("ShopStuf", { code, token,name })}
-            >
-              <Text style={styles.item}>
-                {code}: {name}
-              </Text>
-            </TouchableOpacity>
-          ))}
-          {error && <Text style={styles.error}>{error}</Text>}
+      <Text style={styles.heading}>Sklepy</Text>
+      {salonsData.map(({ code, name }) => (
+        <TouchableOpacity
+          key={code}
+          onPress={() => navigation.navigate("ShopStuf", { code, token, name })}
+        >
+          <Text style={styles.item}>
+            {code}: {name}
+          </Text>
+        </TouchableOpacity>
+      ))}
+      {error && <Text style={styles.error}>{error}</Text>}
     </ScrollView>
   );
 };
@@ -68,18 +69,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   item: {
-    alignItems: "center", 
+    alignItems: "center",
     height: 30,
     borderWidth: 1,
     fontSize: 16,
     marginBottom: 5,
   },
-  
+
   error: {
     color: "red",
     marginTop: 10,
   },
 });
-
 
 export default Locations;
