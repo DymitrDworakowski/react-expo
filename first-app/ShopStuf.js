@@ -67,7 +67,7 @@ const ShopStuf = () => {
         salonStuf.map(({ idModCol, producer, indexes, category }) => (
           <TouchableOpacity
           key={idModCol}
-    onPress={() => navigation.navigate("Product", {idModCol, producer, indexes, category })}
+    onPress={() => navigation.navigate("Product", {idModCol, producer, indexes, category,token } )}
     >
           <View  style={styles.container}>
             <Img idModCol={idModCol} token={token} />
