@@ -7,19 +7,21 @@ const Product = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { idModCol, producer, indexes, category,token } = route.params;
-  const [idImg, setIdImg] = useState(null);
+  const [idImg, setIdImg] = useState([]);
   const [imgProduct, setImgProduct] = useState(null);
   console.log(idImg)
-  console.log(imgProduct)
+  
 
-  const fetchImgId = () => {
-    axios
+  const fetchImgId = async () => {
+  await  axios
       .get(`http://bart.intersport.pl:33002/photo/identifiers/${idModCol}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
+        // setTimeout( () => {setIdImg(response.data.map((img) =>img.id ))}, 1000)
         setIdImg(response.data.map((img) =>img.id ));
-        setTimeout( () => {fetchImages(); }, 3000);
+        fetchImages();
+        // setTimeout( () => {fetchImages(); }, 1000);
         
       })
       .catch((error) => {
@@ -30,35 +32,28 @@ const Product = () => {
 
   const fetchImages = async () => {
     try {
-      // Використовуємо метод Promise.all для виконання запитів паралельно
-      let responses;
-      if (idImg.length >= 1) {
-        responses = await Promise.all(
+      // Перевірка, чи існує значення idImg та чи має воно довжину більше 0
+      if (idImg.length > 0) {
+        // Використовуємо метод Promise.all для виконання запитів паралельно
+        let responses = await Promise.all(
           idImg.map((id) =>
             axios.get(`http://bart.intersport.pl:33002/photo/${id}/scanner`, {
               headers: { Authorization: `Bearer ${token}` },
             })
           )
         );
+    
+        // Отримуємо дані з кожного відповіді
+        const images = responses.map((response) => response.data);
+        console.log(images);
+        setImgProduct(images.map((image) => image.base64));
       } else {
-        responses = await Promise.all([
-          axios.get(`http://bart.intersport.pl:33002/photo/${idImg[0]}/scanner`, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
-        ]);
+        console.error("idImg is null or empty");
       }
-  
-      // Отримуємо дані з кожного відповіді
-      const images = responses.map((response) => response.data);
-      console.log(images)
-      setImgProduct(images.map((image) =>image.base64));
-      // Тут можна обробити отримані дані, наприклад, вивести їх у консоль
-      
     } catch (error) {
       console.error("Error fetching images:", error);
     }
   };
-
 
   useEffect(() => {
     fetchImgId();
