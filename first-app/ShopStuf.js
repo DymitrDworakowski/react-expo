@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, Text, View, StyleSheet, ActivityIndicator,TouchableOpacity } from "react-native";
+import { ScrollView, Text, View, StyleSheet, ActivityIndicator, Button,TouchableOpacity } from "react-native";
 import axios from "axios";
 import Img from "./Img";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -12,6 +12,7 @@ const ShopStuf = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0); // початкова сторінка
+  // const [idModCol, setIdModCol] = useState(null); 
 
   const requestData = {
     pageNo: page, // використовуйте поточну сторінку
@@ -30,16 +31,46 @@ const ShopStuf = () => {
 
   useEffect(() => {
     fetchStuf();
-  }, []);
 
-  const fetchStuf = () => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <Button
+          onPress={() => navigation.goBack()}
+          title="Back"
+          color="#000"
+        />
+      ),
+      headerRight: () => (
+        <View style={styles.headerButtons}>
+          <Button
+            onPress={() => {
+              // Дії, що відбуваються при натисканні кнопки Сканування
+            }}
+            title="Skanowanie"
+            color="#000"
+          />
+          <Button
+            onPress={() => {
+              // Дії, що відбуваються при натисканні кнопки Фільтр
+            }}
+            title="Filtr"
+            color="#000"
+          />
+        </View>
+      ),
+    });
+  }, [navigation]);
+
+  const fetchStuf = async() => {
     setLoading(true);
-    axios
+    await axios
       .post("https://apps.intersport.pl/ams/api/v2/product/list", requestData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
+        
         setSalonStuf([...salonStuf, ...response.data.products]);
+        setIdModCol(salonStuf.map((e) =>e.idModCol))
         setLoading(false);
         setPage((prewPage)=> prewPage + 1); // Після отримання даних оновіть сторінку
       })
