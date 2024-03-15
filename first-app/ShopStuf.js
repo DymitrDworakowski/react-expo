@@ -12,8 +12,7 @@ const ShopStuf = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0); // початкова сторінка
-  // const [idModCol, setIdModCol] = useState(null); 
-  // const [idImg, setIdImg] = useState([]);
+  
 
   const requestData = {
     pageNo: page, // використовуйте поточну сторінку
@@ -69,10 +68,8 @@ const ShopStuf = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
+        console.log(response.data.products);
         setSalonStuf([...salonStuf, ...response.data.products]);
-        
-       
         setLoading(false);
         setPage((prewPage)=> prewPage + 1); // Після отримання даних оновіть сторінку
       })
@@ -112,7 +109,7 @@ const ShopStuf = () => {
                   Nazwa: {shortName}, {idModCol}
                 </Text>
                 <Text>Kategoria: {category}</Text>
-                <Text>Cena: {price.salePrice}</Text>
+                  <Text>Cena: {price.salePrice}</Text>
                 <Text> EAN: {ean} </Text>
                 {size !== "" ? (
                   <Text> Size: {size}</Text>

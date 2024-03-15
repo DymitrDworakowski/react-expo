@@ -6,10 +6,7 @@ import axios from "axios";
 const Product = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  
   const { idModCol, producer, indexes, category,token } = route.params;
-  
-  console.log(idModCol)
   const [idImg, setIdImg] = useState([]);
   const [imgProduct, setImgProduct] = useState(null);
   
