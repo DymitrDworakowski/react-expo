@@ -13,6 +13,7 @@ const ShopStuf = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0); // початкова сторінка
   // const [idModCol, setIdModCol] = useState(null); 
+  // const [idImg, setIdImg] = useState([]);
 
   const requestData = {
     pageNo: page, // використовуйте поточну сторінку
@@ -63,14 +64,15 @@ const ShopStuf = () => {
 
   const fetchStuf = async() => {
     setLoading(true);
-    await axios
+     axios
       .post("https://apps.intersport.pl/ams/api/v2/product/list", requestData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
         
         setSalonStuf([...salonStuf, ...response.data.products]);
-        setIdModCol(salonStuf.map((e) =>e.idModCol))
+        
+       
         setLoading(false);
         setPage((prewPage)=> prewPage + 1); // Після отримання даних оновіть сторінку
       })
@@ -80,6 +82,7 @@ const ShopStuf = () => {
         setLoading(false);
       });
   };
+
 
   const handleScroll = (event) => {
     const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
