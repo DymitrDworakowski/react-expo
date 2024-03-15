@@ -34,7 +34,7 @@ return (
 }
 
 
-const Filtr = () => {
+const Filter = () => {
    
 
   return (
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Filtr;
+export default Filter;

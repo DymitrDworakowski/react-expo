@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, Text, View, StyleSheet, ActivityIndicator, Button,TouchableOpacity } from "react-native";
+import {
+  ScrollView,
+  Text,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import axios from "axios";
 import Img from "./Img";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -7,15 +15,14 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 const ShopStuf = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { code, token,name } = route.params;
+  const { code, token, name } = route.params;
   const [salonStuf, setSalonStuf] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(0); // початкова сторінка
-  
+  const [page, setPage] = useState(0);
 
   const requestData = {
-    pageNo: page, // використовуйте поточну сторінку
+    pageNo: page,
     locationCode: code,
     availabilityType: "inSales",
     withPhotos: false,
@@ -34,11 +41,7 @@ const ShopStuf = () => {
 
     navigation.setOptions({
       headerLeft: () => (
-        <Button
-          onPress={() => navigation.goBack()}
-          title="Back"
-          color="#000"
-        />
+        <Button onPress={() => navigation.goBack()} title="Back" color="#000" />
       ),
       headerRight: () => (
         <View style={styles.headerButtons}>
@@ -61,17 +64,17 @@ const ShopStuf = () => {
     });
   }, [navigation]);
 
-  const fetchStuf = async() => {
+  const fetchStuf = async () => {
     setLoading(true);
-     axios
+    axios
       .post("https://apps.intersport.pl/ams/api/v2/product/list", requestData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        console.log(response.data.products);
+        // console.log(response.data.products);
         setSalonStuf([...salonStuf, ...response.data.products]);
         setLoading(false);
-        setPage((prewPage)=> prewPage + 1); // Після отримання даних оновіть сторінку
+        setPage((prewPage) => prewPage + 1); // Після отримання даних оновіть сторінку
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -80,10 +83,10 @@ const ShopStuf = () => {
       });
   };
 
-
   const handleScroll = (event) => {
     const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
-    const isCloseToBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
+    const isCloseToBottom =
+      layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
     if (isCloseToBottom && !loading) {
       fetchStuf(); // завантажте нові дані, якщо користувач близько до кінця списку і не йде інше завантаження
     }
@@ -91,19 +94,55 @@ const ShopStuf = () => {
 
   return (
     <View>
-    <Text style={styles.fixedText}>{code}  {name}</Text>
-    <ScrollView onScroll={handleScroll} scrollEventThrottle={300}>
-    
-      {salonStuf.length > 0 ? (
-        salonStuf.map(({ idModCol, producer, indexes, category }) => (
-          <TouchableOpacity
-          key={idModCol}
-    onPress={() => navigation.navigate("Product", {idModCol, producer, indexes, category,token } )}
-    >
-          <View  style={styles.container}>
-            <Img idModCol={idModCol} token={token} />
-            <Text>Producent: {producer}</Text>
-            {indexes.map(({ price, ean, size, shortName, stock }) => (
+      <Text style={styles.fixedText}>
+        {code} {name}
+      </Text>
+      <ScrollView onScroll={handleScroll} scrollEventThrottle={300}>
+        {salonStuf.length > 0 ? (
+          salonStuf.map(({ idModCol, producer, indexes, category }) => (
+            <TouchableOpacity
+              key={idModCol}
+              onPress={() =>
+                navigation.navigate("Product", {
+                  idModCol,
+                  producer,
+                  indexes,
+                  category,
+                  token,
+                })
+              }
+            >
+              <View style={styles.container}>
+                <Img idModCol={idModCol} token={token} />
+                <Text>Producent: {producer}</Text>
+                {Array.from(
+                  new Set(
+                    indexes.map(
+                      ({ shortName, price }) =>
+                        `${shortName}-${price.salePrice}`
+                    )
+                  )
+                ).map((uniqueShortNameAndPrice) => {
+                  const [shortName, salePrice] =
+                    uniqueShortNameAndPrice.split("-");
+                  return (
+                    <View key={uniqueShortNameAndPrice} style={styles.item}>
+                      <Text>Nazwa: {shortName}</Text>
+                      <Text>Cena: {salePrice}</Text>
+                      <Text>
+                        Stany:{" "}
+                        {indexes.map(({ stock }) => stock.inStore)}
+                      </Text>
+                    </View>
+                  );
+                })}
+                <View style={styles.item}>
+                  <Text>
+                    Size: {indexes.map(({ size }) => size).join(", ")}
+                  </Text>
+                </View>
+
+                {/* {indexes.map(({ price, ean, size, shortName, stock }) => (
               <View key={ean} style={styles.item}>
                 <Text>
                   Nazwa: {shortName}, {idModCol}
@@ -121,20 +160,19 @@ const ShopStuf = () => {
                   Stany {code}: {stock.inStore}
                 </Text>
               </View>
-            ))}
+            ))} */}
+              </View>
+            </TouchableOpacity>
+          ))
+        ) : (
+          <View>
+            <Text>Loading...</Text>
           </View>
-          </TouchableOpacity>
-        ))
-      ) : (
-        <View>
-        <Text>Loading...</Text>
-        </View>
-      )}
-      
-      {loading && <ActivityIndicator style={styles.loadingIndicator} />}
-      {error && <Text style={styles.error}>{error}</Text>}
-      
-    </ScrollView>
+        )}
+
+        {loading && <ActivityIndicator style={styles.loadingIndicator} />}
+        {error && <Text style={styles.error}>{error}</Text>}
+      </ScrollView>
     </View>
   );
 };
@@ -149,7 +187,7 @@ const styles = StyleSheet.create({
     borderWidth: 1, // Border width
   },
   fixedText: {
-    backgroundColor : '#FFFFFF',
+    backgroundColor: "#FFFFFF",
   },
   item: {
     borderWidth: 1,

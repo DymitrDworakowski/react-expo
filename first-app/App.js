@@ -4,7 +4,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { Button } from 'react-native';
 import Login from "./Login";
 import Device from "./Device";
-import Home from "./Home";
+import Filter from "./Filter";
 import Locations from "./Locations";
 import ShopStuf from "./ShopStuf";
 import Product from "./Product";
@@ -44,7 +44,7 @@ export default function App() {
             }
           }}
         />
-        <MainStack.Screen name="Home" component={Home} options={{title:'Logowanie'}}/>
+        <MainStack.Screen name="Filter" component={Filter} options={{title:'Logowanie'}}/>
         <MainStack.Screen name="Device" component={Device} options={{title:'Device screen'}}/>
         <MainStack.Screen name="Locations" component={Locations} options={{title:'Wybierz salon'}}/>
         <MainStack.Screen name="ShopStuf" component={ShopStuf} options={{title:'Produkty'}}/>
