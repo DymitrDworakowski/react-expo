@@ -17,6 +17,7 @@ const ShopStuf = () => {
   const route = useRoute();
   const { code, token, name } = route.params;
   const [salonStuf, setSalonStuf] = useState([]);
+  console.log(salonStuf);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
@@ -99,71 +100,71 @@ const ShopStuf = () => {
       </Text>
       <ScrollView onScroll={handleScroll} scrollEventThrottle={300}>
         {salonStuf.length > 0 ? (
-          salonStuf.map(({ idModCol, producer, indexes, category }) => (
-            <TouchableOpacity
-              key={idModCol}
-              onPress={() =>
-                navigation.navigate("Product", {
-                  idModCol,
-                  producer,
-                  indexes,
-                  category,
-                  token,
-                })
-              }
-            >
-              <View style={styles.container}>
-                <Img idModCol={idModCol} token={token} />
-                <Text>Producent: {producer}</Text>
-                {Array.from(
-                  new Set(
-                    indexes.map(
-                      ({ shortName, price }) =>
-                        `${shortName}-${price.salePrice}`
+          salonStuf.map(
+            ({ idModCol, producer, indexes, category, producerModel }) => (
+              <TouchableOpacity
+                key={idModCol}
+                onPress={() =>
+                  navigation.navigate("Product", {
+                    idModCol,
+                    producer,
+                    indexes,
+                    category,
+                    token,
+                  })
+                }
+              >
+                <View style={styles.container}>
+                  {Array.from(
+                    new Set(
+                      indexes.map(
+                        ({ shortName, price }) =>
+                          `${shortName}-${price.salePrice}-${price.ecomPrice}-${price.cataloguePrice}`
+                      )
                     )
-                  )
-                ).map((uniqueShortNameAndPrice) => {
-                  const [shortName, salePrice] =
-                    uniqueShortNameAndPrice.split("-");
-                  return (
-                    <View key={uniqueShortNameAndPrice} style={styles.item}>
-                      <Text>Nazwa: {shortName}</Text>
-                      <Text>Cena: {salePrice}</Text>
-                      <Text>
-                        Stany:{" "}
-                        {indexes.map(({ stock }) => stock.inStore)}
-                      </Text>
-                    </View>
-                  );
-                })}
-                <View style={styles.item}>
-                  <Text>
-                    Size: {indexes.map(({ size }) => size).join(", ")}
-                  </Text>
-                </View>
+                  ).map((uniqueShortNameAndPrice) => {
+                    const [shortName, salePrice, ecomPrice, cataloguePrice] =
+                      uniqueShortNameAndPrice.split("-");
+                    return (
+                      <View key={uniqueShortNameAndPrice} style={styles.item}>
+                        <Text>{shortName}</Text>
+                        <Text>Producent: {producer}</Text>
+                        <Img idModCol={idModCol} token={token} />
+                        <Text>Model: {producerModel} </Text>
+                        <Text>{category}</Text>
+                        <Text>Cena sal: {salePrice}</Text>
+                        <Text>Cena ecom: {ecomPrice}</Text>
+                        <Text>Cena katalogowa:{cataloguePrice}</Text>
 
-                {/* {indexes.map(({ price, ean, size, shortName, stock }) => (
-              <View key={ean} style={styles.item}>
-                <Text>
-                  Nazwa: {shortName}, {idModCol}
-                </Text>
-                <Text>Kategoria: {category}</Text>
-                  <Text>Cena: {price.salePrice}</Text>
-                <Text> EAN: {ean} </Text>
-                {size !== "" ? (
-                  <Text> Size: {size}</Text>
-                ) : (
-                  <Text> Size: Brak rozmiaru </Text>
-                )}
-                <Text>Stany: {stock.inSale},</Text>
-                <Text>
-                  Stany {code}: {stock.inStore}
-                </Text>
-              </View>
-            ))} */}
-              </View>
-            </TouchableOpacity>
-          ))
+                        <Text>
+                          {indexes.map(({ stock }) =>
+                            stock.inStore === 0 ? (
+                              <Text key={stock.inStore}>
+                                 Stany {code} {name} : Towar nie dostępny 
+                              </Text>
+                            ) : (
+                              <Text key={stock.inStore}>
+                                Stany w salonie {stock.inStore}
+                              </Text>
+                            )
+                          )}
+                        </Text>
+                        <Text>
+                          Stany calkowite:
+                          {indexes.map(({ stock }) => stock.inSale)}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                  <View style={styles.item}>
+                    <Text>
+                      Size: {indexes.map(({ size }) => size).join(", ")}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            )
+          )
         ) : (
           <View>
             <Text>Loading...</Text>
