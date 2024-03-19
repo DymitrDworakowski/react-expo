@@ -140,7 +140,7 @@ const ShopStuf = () => {
                           {indexes.map(({ stock }) =>
                             stock.inStore === 0 ? (
                               <Text key={stock.inStore}>
-                                 Stany {code} {name} : Towar nie dostępny 
+                                Stany {code} {name} : Towar nie dostępny
                               </Text>
                             ) : (
                               <Text key={stock.inStore}>
