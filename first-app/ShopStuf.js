@@ -54,9 +54,11 @@ const ShopStuf = () => {
             color="#000"
           />
           <Button
-            onPress={() => {
-              // Дії, що відбуваються при натисканні кнопки Фільтр
-            }}
+             onPress={() =>
+              navigation.navigate("Filter", {
+                token
+              })
+            }
             title="Filtr"
             color="#000"
           />

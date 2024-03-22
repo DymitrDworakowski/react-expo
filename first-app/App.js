@@ -44,7 +44,7 @@ export default function App() {
             }
           }}
         />
-        <MainStack.Screen name="Filter" component={Filter} options={{title:'Logowanie'}}/>
+        <MainStack.Screen name="Filter" component={Filter} options={{title:'Filter'}}/>
         <MainStack.Screen name="Device" component={Device} options={{title:'Device screen'}}/>
         <MainStack.Screen name="Locations" component={Locations} options={{title:'Wybierz salon'}}/>
         <MainStack.Screen name="ShopStuf" component={ShopStuf} options={{title:'Produkty'}}/>
