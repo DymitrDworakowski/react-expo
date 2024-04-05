@@ -17,7 +17,6 @@ const ShopStuf = () => {
   const route = useRoute();
   const { code, token, name } = route.params;
   const [salonStuf, setSalonStuf] = useState([]);
-  console.log(salonStuf);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
@@ -54,9 +53,9 @@ const ShopStuf = () => {
             color="#000"
           />
           <Button
-             onPress={() =>
+            onPress={() =>
               navigation.navigate("Filter", {
-                token
+                token,
               })
             }
             title="Filtr"

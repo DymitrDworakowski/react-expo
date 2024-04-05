@@ -4,7 +4,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { Button } from 'react-native';
 import Login from "./Login";
 import Device from "./Device";
-import Filter from "./Filter";
+import Filter from "./Filter/Filter";
 import Locations from "./Locations";
 import ShopStuf from "./ShopStuf";
 import Product from "./Product";

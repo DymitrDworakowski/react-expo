@@ -5,6 +5,9 @@ import { Picker } from "@react-native-picker/picker";
 import RNPickerSelect from 'react-native-picker-select';
 
 import axios from "axios";
+import Categories from "./Categories";
+import Types from "./Types";
+import Producers from "./Producers";
 
 import {
   StyleSheet,
@@ -40,55 +43,17 @@ function Profile() {
 const Filter = () => {
   const route = useRoute();
   const { token } = route.params;
-  const [categories, setCategories] = useState([]);
-  const [selectedValue, setSelectedValue] = useState("java");
-  console.log(categories);
 
-  const requestData = {
-    filterDictionary: "categories",
-    locationCode: "W07",
-    availabilityType: "all",
-    withPhotos: true,
-    withActiveDiscounts: false,
-  };
 
-  useEffect(() => {
-    filterProduct();
-  }, []);
 
-  const filterProduct = async () => {
-    axios
-      .post(
-        "https://apps.intersport.pl/ams/api/v2/product/filters",
-        requestData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-        setCategories(response.data.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setError("Error fetching data");
-      });
-  };
-  const pickerItems = categories.map((category) => ({
-    label: category,
-    value: category,
-  }));
+
   
   return (
   
     <View>
-    {pickerItems.map((item, index) => (
-      <RNPickerSelect
-        key={index}
-        onValueChange={(value) => console.log(value)}
-        items={[{ label: item.label, value: item.value }]}
-      />
-    ))}
+      <Producers token ={token}/>
+      <Types token ={token}/>
+    <Categories token ={token}/>
   </View>
 
     // <Tabs.Navigator
