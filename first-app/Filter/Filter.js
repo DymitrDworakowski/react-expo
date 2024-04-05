@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Picker } from "@react-native-picker/picker";
-import RNPickerSelect from 'react-native-picker-select';
+import RNPickerSelect from "react-native-picker-select";
 
 import axios from "axios";
 import Categories from "./Categories";
 import Types from "./Types";
 import Producers from "./Producers";
-
+import SexList from "./SexList";
+import Sizes from "./Sizes";
 import {
   StyleSheet,
   Text,
   View,
-  
   Button,
   TextInput,
   KeyboardAvoidingView,
@@ -22,6 +22,7 @@ import {
   Keyboard,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
+
 const Tabs = createBottomTabNavigator();
 
 function Settings() {
@@ -44,17 +45,14 @@ const Filter = () => {
   const route = useRoute();
   const { token } = route.params;
 
-
-
-
-  
   return (
-  
     <View>
-      <Producers token ={token}/>
-      <Types token ={token}/>
-    <Categories token ={token}/>
-  </View>
+      <Producers token={token} />
+      <Types token={token} />
+      <Categories token={token} />
+      <SexList token={token} />
+      <Sizes token={token} />
+    </View>
 
     // <Tabs.Navigator
 
