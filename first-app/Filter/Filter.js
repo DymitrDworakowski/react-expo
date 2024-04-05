@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Picker } from "@react-native-picker/picker";
+
 import RNPickerSelect from "react-native-picker-select";
 
 import axios from "axios";
