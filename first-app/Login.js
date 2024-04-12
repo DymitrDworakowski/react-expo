@@ -13,6 +13,7 @@ import {
 
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import {userToken} from './redux/actions/token'
 
 const Login = () => {
   const navigation = useNavigation();
@@ -21,6 +22,8 @@ const Login = () => {
   const [deviceId, setDeviceId] = useState("string");
   const [appVersion, setAppVersion] = useState("string");
   const [error, setError] = useState("");
+ 
+  const dispatch = useDispatch();
 
   const auth = () => {
     const requestData = {
@@ -34,9 +37,10 @@ const Login = () => {
       .post("https://apps.intersport.pl/ams/api/v2/auth/token", requestData)
       .then(response => {
         const token = response.data.token;
+        dispatch(userToken(token))
         console.log(response.data);
        
-        navigation.navigate('Locations',{ token });
+        navigation.navigate('Locations');
     })
       .catch((error) => {
         console.error("Error fetching data:", error);

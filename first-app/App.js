@@ -10,6 +10,7 @@ import Filter from "./Filter/Filter";
 import Locations from "./Locations";
 import ShopStuf from "./ShopStuf";
 import Product from "./Product";
+import { store, persistor } from "./redux/state/store";
 
 const MainStack = createStackNavigator();
 
@@ -30,8 +31,8 @@ const LoginScreen = () => {
 
 export default function App() {
   return (
-    <Provider>
-      <PersistGate>
+    <Provider store={store}>
+      <PersistGate persistor={persistor} loading={null}>
         <NavigationContainer>
           <MainStack.Navigator initialRouteName="Login">
             <MainStack.Screen
