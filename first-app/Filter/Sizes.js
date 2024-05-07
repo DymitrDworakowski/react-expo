@@ -3,11 +3,10 @@ import RNPickerSelect from "react-native-picker-select";
 import axios from "axios";
 
 import { StyleSheet, View } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 const Sizes = () => {
-  const route = useRoute();
-  const { token } = route.params;
+  const token = useSelector((state) => state.auth.token);
   const [sizes, setSizes] = useState([]);
   console.log(sizes);
 

@@ -38,8 +38,7 @@ const Locations = () => {
         setError("Error fetching data");
       });
   };
-const Sal = useSelector((state) => state.location.setLocations);
-console.log(Sal);
+
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -47,7 +46,7 @@ console.log(Sal);
       {salonsData.map(({ code, name }) => (
         <TouchableOpacity
           key={code}
-          onPress={() => navigation.navigate("ShopStuf")}
+          onPress={() => navigation.navigate("ShopStuf", { code, name })}
         >
           <Text style={styles.item}>
             {code}: {name}

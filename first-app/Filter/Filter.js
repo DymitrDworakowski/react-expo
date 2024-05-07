@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useSelector } from "react-redux";
 
-import RNPickerSelect from "react-native-picker-select";
-
-import axios from "axios";
 import Categories from "./Categories";
 import Types from "./Types";
 import Producers from "./Producers";
@@ -42,8 +40,8 @@ function Profile() {
 }
 
 const Filter = () => {
-  const route = useRoute();
-  const { token } = route.params;
+  
+  const token = useSelector((state) => state.auth.token);
 
   return (
     <View>

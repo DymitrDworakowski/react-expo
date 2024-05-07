@@ -11,11 +11,13 @@ import {
 import axios from "axios";
 import Img from "./Img";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
 
 const ShopStuf = () => {
   const navigation = useNavigation();
+  const token = useSelector((state) => state.auth.token);
   const route = useRoute();
-  const { code, token, name } = route.params;
+  const { code, name } = route.params;
   const [salonStuf, setSalonStuf] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -54,9 +56,7 @@ const ShopStuf = () => {
           />
           <Button
             onPress={() =>
-              navigation.navigate("Filter", {
-                token,
-              })
+              navigation.navigate("Filter")
             }
             title="Filtr"
             color="#000"
