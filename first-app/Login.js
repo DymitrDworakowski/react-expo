@@ -13,16 +13,21 @@ import {
 
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import {userToken} from './redux/actions/token'
+// import {userToken} from './redux/actions/token'
+import { useDispatch, useSelector } from "react-redux";
+import { authSlice } from "./redux/slice";
 
 const Login = () => {
   const navigation = useNavigation();
-  const [login, setLogin] = useState("ams_dd");
-  const [password, setPassword] = useState("123Qwe");
+  // const [login, setLogin] = useState("ams_dd");
+  // const [password, setPassword] = useState("123Qwe");
   const [deviceId, setDeviceId] = useState("string");
   const [appVersion, setAppVersion] = useState("string");
   const [error, setError] = useState("");
- 
+
+  const login = useSelector((state) => state.auth.login);
+  const password = useSelector((state) => state.auth.password);
+
   const dispatch = useDispatch();
 
   const auth = () => {
@@ -37,9 +42,7 @@ const Login = () => {
       .post("https://apps.intersport.pl/ams/api/v2/auth/token", requestData)
       .then(response => {
         const token = response.data.token;
-        dispatch(userToken(token))
-        console.log(response.data);
-       
+        dispatch(authSlice.actions.userToken(token)) // Передайте токен як аргумент
         navigation.navigate('Locations');
     })
       .catch((error) => {
@@ -60,7 +63,7 @@ const Login = () => {
           style={styles.input}
           placeholder="Login"
           value={login}
-          onChangeText={setLogin}
+          onChangeText={() => dispatch(authSlice.actions.userLogin(text)) }
         />
 
         <TextInput
@@ -68,7 +71,7 @@ const Login = () => {
           placeholder="Password"
           secureTextEntry
           value={password}
-          onChangeText={setPassword}
+          onChangeText={() => dispatch(authSlice.actions.userPassword(text)) }
         />
 
         {/* <TextInput

@@ -9,13 +9,16 @@ import {
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+
+import { locationSlice } from "./redux/slice";
 
 const Locations = () => {
   const navigation = useNavigation();
-  const route = useRoute();
-  const { token } = route.params; // Отримання токену з параметрів навігації
+  const token = useSelector((state) => state.auth.token);
   const [salonsData, setSalonsData] = useState([]);
   const [error, setError] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetchSalons();
@@ -28,12 +31,15 @@ const Locations = () => {
       })
       .then((response) => {
         setSalonsData(response.data.data);
+        dispatch(locationSlice.actions.setLocation(response.data.data));
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
         setError("Error fetching data");
       });
   };
+const Sal = useSelector((state) => state.location.setLocations);
+console.log(Sal);
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -41,7 +47,7 @@ const Locations = () => {
       {salonsData.map(({ code, name }) => (
         <TouchableOpacity
           key={code}
-          onPress={() => navigation.navigate("ShopStuf", { code, token, name })}
+          onPress={() => navigation.navigate("ShopStuf")}
         >
           <Text style={styles.item}>
             {code}: {name}

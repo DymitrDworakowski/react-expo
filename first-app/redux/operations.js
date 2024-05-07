@@ -1,19 +1,19 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+// import { createAsyncThunk } from "@reduxjs/toolkit";
+// import axios from "axios";
 
 
 
-export const loginAms = createAsyncThunk("login/getToken",
-asyns(requestData, thunkAPI) => {
-    try{
-        const res = await axios.post("https://apps.intersport.pl/ams/api/v2/auth/token", requestData)
-     return res.data;
-    } catch(err){
-        return thunkAPI.rejectWithValue(error.message);
-    }
-}
+// export const loginAms = createAsyncThunk("login/getToken",
+// asyns(requestData, thunkAPI) => {
+//     try{
+//         const res = await axios.post("https://apps.intersport.pl/ams/api/v2/auth/token", requestData)
+//      return res.data;
+//     } catch(err){
+//         return thunkAPI.rejectWithValue(error.message);
+//     }
+// }
 
-)
+// )
 
 // const auth = () => {
 //     const requestData = {
