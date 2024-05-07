@@ -73,7 +73,7 @@ const ShopStuf = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        // console.log(response.data.products);
+        
         setSalonStuf([...salonStuf, ...response.data.products]);
         setLoading(false);
         setPage((prewPage) => prewPage + 1); // Після отримання даних оновіть сторінку
