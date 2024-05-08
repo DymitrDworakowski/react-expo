@@ -53,9 +53,9 @@ export const locationSlice = createSlice({
 export const filterSlice = createSlice({
   name: "filter",
   initialState:{
-    pageNo: '',
-    locationCode: '',
-    availabilityType: "inSales",
+    // pageNo: '',
+    // locationCode: '',
+    // availabilityType: "inSales",
     withPhotos: false,
     withActiveDiscounts: false,
     name: "",

@@ -39,12 +39,12 @@ const Locations = () => {
 
   const data = useSelector((state) => state.location.locations);
 
-  return (
-    <View style={styles.container}>
+ return (
+    <>
       <Text style={styles.heading}>Sklepy</Text>
       {/* Умовна логіка для вибору компонента прокрутки */}
       {Platform.OS === "web" ? (
-        <div style={styles.scrollViewWeb}>
+        <div style={styles.scrollViewWeb} key={length}>
           {data.map(({ code, name }) => (
             <Pressable
               key={code}
@@ -72,7 +72,7 @@ const Locations = () => {
         </ScrollView>
       )}
       {error && <Text style={styles.error}>{error}</Text>}
-    </View>
+    </>
   );
 };
 

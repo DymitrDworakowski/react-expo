@@ -23,19 +23,41 @@ const ShopStuf = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
 
+
+  const producer = useSelector((state) => state.filter.producers);
+  const category = useSelector((state) => state.filter.category);
+  const sex = useSelector((state) => state.filter.sexList);
+  const size = useSelector((state) => state.filter.size);
+  const type = useSelector((state) => state.filter.type);
+
+  // const requestData = {
+  //   pageNo: page,
+  //   locationCode: code,
+  //   availabilityType: "inSales",
+  //   withPhotos: false,
+  //   withActiveDiscounts: false,
+  //   name: "",
+  //   price: { from: 0, to: 0 },
+  //   commodityGroup: "",
+  //   categories: [],
+  //   producers: [],
+  //   sexList: [],
+  //   sizes: [],
+  // };
+
   const requestData = {
     pageNo: page,
-    locationCode: code,
+    locationCode: 'W13',
     availabilityType: "inSales",
     withPhotos: false,
     withActiveDiscounts: false,
     name: "",
     price: { from: 0, to: 0 },
-    commodityGroup: "",
-    categories: [],
-    producers: [],
-    sexList: [],
-    sizes: [],
+    commodityGroup: type,
+    categories: category,
+    producers: producer,
+    sexList: sex,
+    sizes: size,
   };
 
   useEffect(() => {

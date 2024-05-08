@@ -5,7 +5,8 @@ import Types from "./Types";
 import Producers from "./Producers";
 import SexList from "./SexList";
 import Sizes from "./Sizes";
-import { StyleSheet, View, TextInput } from "react-native";
+import { StyleSheet, View, TextInput,Pressable,Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const Filter = () => {
   const token = useSelector((state) => state.auth.token);
@@ -14,6 +15,10 @@ const Filter = () => {
   const sex = useSelector((state) => state.filter.sexList);
   const size = useSelector((state) => state.filter.size);
   const type = useSelector((state) => state.filter.type);
+  const data = useSelector((state) => state.location.locations);
+  const navigation = useNavigation();
+
+  const namesAndCodes = data.map(({ name, code }) => ({ name, code }));
 
   const requestData = {
     pageNo: "",
@@ -66,6 +71,11 @@ const Filter = () => {
       <Categories token={token} />
       <SexList token={token} />
       <Sizes token={token} />
+      <Pressable onPress={() =>
+              navigation.navigate("ShopStuf",namesAndCodes)
+            }>
+        <Text>Search items</Text>
+      </Pressable>
     </View>
   );
 };
