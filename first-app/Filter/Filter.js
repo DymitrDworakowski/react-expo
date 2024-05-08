@@ -11,6 +11,9 @@ const Filter = () => {
   const token = useSelector((state) => state.auth.token);
   const producer = useSelector((state) => state.filter.producers);
   const category = useSelector((state) => state.filter.category);
+  const sex = useSelector((state) => state.filter.sexList);
+  const size = useSelector((state) => state.filter.size);
+  const type = useSelector((state) => state.filter.type);
 
   const requestData = {
     pageNo: "",
@@ -20,11 +23,11 @@ const Filter = () => {
     withActiveDiscounts: false,
     name: "",
     price: { from: 0, to: 0 },
-    commodityGroup: "",
+    commodityGroup: type,
     categories: [category],
     producers: [producer],
-    sexList: [],
-    sizes: [],
+    sexList: [sex],
+    sizes: [size],
   };
 
   const fetchStuf = async () => {

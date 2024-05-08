@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import RNPickerSelect from "react-native-picker-select";
 import axios from "axios";
 
-import { StyleSheet, View } from "react-native";
-import { useSelector } from "react-redux";
+import { StyleSheet, View, Text } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { filterSlice } from "../redux/slice";
 
 const Types = () => {
 
   const token = useSelector((state) => state.auth.token);
   const [types, setTypes] = useState([]);
-  console.log(types);
+  const dispatch = useDispatch();
 
   const requestData = {
     filterDictionary: "commodityGroup",
@@ -47,8 +48,9 @@ const Types = () => {
 
   return (
     <View>
+      <Text>Typ</Text>
       <RNPickerSelect
-        onValueChange={(value) => console.log(value)}
+        onValueChange={(value) => dispatch(filterSlice.actions.setTypes(value))}
         items={pickerItems.map((item) => ({
           label: item.label,
           value: item.value,

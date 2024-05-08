@@ -76,5 +76,11 @@ export const filterSlice = createSlice({
     setSexList: (state, action) => {
       state.sexList = action.payload;
     },
+    setSizes: (state, action) => {
+      state.sizes = action.payload;
+    },
+    setTypes: (state, action) => {
+      state.commodityGroup = action.payload
+    },
   },
 });
