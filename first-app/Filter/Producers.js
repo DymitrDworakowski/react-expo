@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import RNPickerSelect from "react-native-picker-select";
 import axios from "axios";
 
-import { StyleSheet, View } from "react-native";
-import { useRoute } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { StyleSheet, View ,Text} from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { filterSlice } from "../redux/slice";
+
 const Producers = () => {
   
   const token = useSelector((state) => state.auth.token);
   const [producers, setProducers] = useState([]);
-  console.log(producers);
+  const dispatch = useDispatch();
 
   const requestData = {
     filterDictionary: "producers",
@@ -47,8 +48,9 @@ const Producers = () => {
 
   return (
     <View>
+      <Text>Producent</Text>
       <RNPickerSelect
-        onValueChange={(value) => console.log(value)}
+        onValueChange={(value) => dispatch(filterSlice.actions.setProducers(value))}
         items={pickerItems.map((item) => ({
           label: item.label,
           value: item.value,

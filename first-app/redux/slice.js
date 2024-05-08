@@ -49,3 +49,32 @@ export const locationSlice = createSlice({
     },
   }
 );
+
+export const filterSlice = createSlice({
+  name: "filter",
+  initialState:{
+    pageNo: '',
+    locationCode: '',
+    availabilityType: "inSales",
+    withPhotos: false,
+    withActiveDiscounts: false,
+    name: "",
+    price: { from: 0, to: 0 },
+    commodityGroup: "",
+    categories: [],
+    producers: [],
+    sexList: [],
+    sizes: [],
+  },
+  reducers: {
+    setProducers: (state, action) => {
+      state.producers = action.payload;
+    },
+    setCategories: (state, action) => {
+      state.categories = action.payload;
+    },
+    setSexList: (state, action) => {
+      state.sexList = action.payload;
+    },
+  },
+});

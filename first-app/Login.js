@@ -2,25 +2,20 @@ import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
-  View,
   Pressable,
   TextInput,
   KeyboardAvoidingView,
   Platform,
-  TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-// import {userToken} from './redux/actions/token'
 import { useDispatch, useSelector } from "react-redux";
 import { authSlice } from "./redux/slice";
 
 const Login = () => {
   const navigation = useNavigation();
-  // const [login, setLogin] = useState("ams_dd");
-  // const [password, setPassword] = useState("123Qwe");
   const [deviceId, setDeviceId] = useState("string");
   const [appVersion, setAppVersion] = useState("string");
   const [error, setError] = useState("");
@@ -88,7 +83,9 @@ const Login = () => {
           onChangeText={setAppVersion}
         /> */}
 
-        <Pressable title="Login" onPress={auth}><Text style={styles.button}>Login</Text></Pressable>
+        <Pressable title="Login" onPress={auth}>
+          <Text style={styles.button}>Login</Text>
+        </Pressable>
         {error ? <Text style={styles.error}>{error}</Text> : null}
       </KeyboardAvoidingView>
     </Pressable>
@@ -97,19 +94,20 @@ const Login = () => {
 
 const styles = StyleSheet.create({
   container: {
+    padding:100 ,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F5FCFF",
   },
-  button:{
+  button: {
     color: "white",
     backgroundColor: "blue",
     padding: 10,
     borderRadius: 4,
     marginBottom: 10,
     textAlign: "center",
-    boxSizing:"none",
+    boxSizing: "none",
   },
   input: {
     borderWidth: 1,

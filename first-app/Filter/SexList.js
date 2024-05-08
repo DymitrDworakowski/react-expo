@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import RNPickerSelect from "react-native-picker-select";
 import axios from "axios";
 
-import { StyleSheet, View } from "react-native";
-import { useSelector } from "react-redux";
+import { StyleSheet, View, Text } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { filterSlice } from "../redux/slice";
 
 const SexList = () => {
- 
   const token = useSelector((state) => state.auth.token);
   const [sexList, setSexList] = useState([]);
-  console.log(sexList);
+  const dispatch = useDispatch();
 
   const requestData = {
     filterDictionary: "sexList",
@@ -47,8 +47,11 @@ const SexList = () => {
 
   return (
     <View>
+      <Text>Płeć</Text>
       <RNPickerSelect
-        onValueChange={(value) => console.log(value)}
+        onValueChange={(value) =>
+          dispatch(filterSlice.actions.setSexList(value))
+        }
         items={pickerItems.map((item) => ({
           label: item.label,
           value: item.value,

@@ -3,8 +3,9 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  Pressable,
   View,
+  Platform,
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
@@ -39,37 +40,62 @@ const Locations = () => {
   const data = useSelector((state) => state.location.locations);
 
   return (
-    <ScrollView style={styles.scrollView}>
+    <View style={styles.container}>
       <Text style={styles.heading}>Sklepy</Text>
-      {data.map(({ code, name }) => (
-        <TouchableOpacity
-          key={code}
-          onPress={() => navigation.navigate("ShopStuf", { code, name })}
-        >
-          <Text style={styles.item}>
-            {code}: {name}
-          </Text>
-        </TouchableOpacity>
-      ))}
+      {/* Умовна логіка для вибору компонента прокрутки */}
+      {Platform.OS === "web" ? (
+        <div style={styles.scrollViewWeb}>
+          {data.map(({ code, name }) => (
+            <Pressable
+              key={code}
+              onPress={() => navigation.navigate("ShopStuf", { code, name })}
+              style={styles.item}
+            >
+              <Text>
+                {code}: {name}
+              </Text>
+            </Pressable>
+          ))}
+        </div>
+      ) : (
+        <ScrollView style={styles.scrollView}>
+          {data.map(({ code, name }) => (
+            <Pressable
+              key={code}
+              onPress={() => navigation.navigate("ShopStuf", { code, name })}
+            >
+              <Text style={styles.item}>
+                {code}: {name}
+              </Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+      )}
       {error && <Text style={styles.error}>{error}</Text>}
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
+  container: {
     flex: 1,
-    backgroundColor: "white", // Background color for ScrollView
-    flex: 1,
+    backgroundColor: "white",
     padding: 20,
-    borderColor: "black", // Border color
-    borderWidth: 1, // Border width
-    borderRadius: 10, // Border radius
+    borderColor: "black",
+    borderWidth: 1,
+    borderRadius: 10,
   },
   heading: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollViewWeb: {
+    overflowY: "auto",
+    maxHeight: "90vh", // Параметр для обмеження висоти на веб-платформі
   },
   item: {
     alignItems: "center",
@@ -78,7 +104,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5,
   },
-
   error: {
     color: "red",
     marginTop: 10,

@@ -136,7 +136,6 @@ const ShopStuf = () => {
                         <Text>Cena sal: {salePrice}</Text>
                         <Text>Cena ecom: {ecomPrice}</Text>
                         <Text>Cena katalogowa:{cataloguePrice}</Text>
-
                         <Text>
                           {indexes.map(({ stock }) =>
                             stock.inStore === 0 ? (
