@@ -7,16 +7,14 @@ import {
   View,
 } from "react-native";
 
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-
 import { locationSlice } from "./redux/slice";
 
 const Locations = () => {
   const navigation = useNavigation();
   const token = useSelector((state) => state.auth.token);
-  const [salonsData, setSalonsData] = useState([]);
   const [error, setError] = useState("");
   const dispatch = useDispatch();
 
@@ -30,7 +28,6 @@ const Locations = () => {
         headers: { Authorization: `Bearer ${token}` }, // Додавання токену до заголовків запиту
       })
       .then((response) => {
-        setSalonsData(response.data.data);
         dispatch(locationSlice.actions.setLocation(response.data.data));
       })
       .catch((error) => {
@@ -39,11 +36,12 @@ const Locations = () => {
       });
   };
 
+  const data = useSelector((state) => state.location.locations);
 
   return (
     <ScrollView style={styles.scrollView}>
       <Text style={styles.heading}>Sklepy</Text>
-      {salonsData.map(({ code, name }) => (
+      {data.map(({ code, name }) => (
         <TouchableOpacity
           key={code}
           onPress={() => navigation.navigate("ShopStuf", { code, name })}

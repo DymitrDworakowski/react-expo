@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
+  Pressable,
   TextInput,
   KeyboardAvoidingView,
   Platform,
@@ -40,11 +40,11 @@ const Login = () => {
 
     axios
       .post("https://apps.intersport.pl/ams/api/v2/auth/token", requestData)
-      .then(response => {
+      .then((response) => {
         const token = response.data.token;
-        dispatch(authSlice.actions.userToken(token)) // Передайте токен як аргумент
-        navigation.navigate('Locations');
-    })
+        dispatch(authSlice.actions.userToken(token)); // Передайте токен як аргумент
+        navigation.navigate("Locations");
+      })
       .catch((error) => {
         console.error("Error fetching data:", error);
         setError("Error fetching data");
@@ -63,7 +63,7 @@ const Login = () => {
           style={styles.input}
           placeholder="Login"
           value={login}
-          onChangeText={() => dispatch(authSlice.actions.userLogin(text)) }
+          onChangeText={() => dispatch(authSlice.actions.userLogin(text))}
         />
 
         <TextInput
@@ -71,7 +71,7 @@ const Login = () => {
           placeholder="Password"
           secureTextEntry
           value={password}
-          onChangeText={() => dispatch(authSlice.actions.userPassword(text)) }
+          onChangeText={() => dispatch(authSlice.actions.userPassword(text))}
         />
 
         {/* <TextInput
@@ -88,8 +88,7 @@ const Login = () => {
           onChangeText={setAppVersion}
         /> */}
 
-        <Button title="Login" onPress={auth} />
-
+        <Pressable title="Login" onPress={auth}><Text style={styles.button}>Login</Text></Pressable>
         {error ? <Text style={styles.error}>{error}</Text> : null}
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
@@ -102,6 +101,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#F5FCFF",
+  },
+  button:{
+    color: "white",
+    backgroundColor: "blue",
+    padding: 10,
+    borderRadius: 4,
+    marginBottom: 10,
+    textAlign: "center",
+    boxSizing:"none",
   },
   input: {
     borderWidth: 1,

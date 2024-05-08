@@ -40,11 +40,11 @@ export const authSlice = createSlice({
 export const locationSlice = createSlice({
     name: "location",
     initialState:{
-        locations: "",
+        locations: [],
     },
     reducers: {
       setLocation: (state, action) => {
-        state.setLocations = action.payload;
+        state.locations = action.payload;
       },
     },
   }
