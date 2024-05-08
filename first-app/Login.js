@@ -52,12 +52,12 @@ const Login = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    <Pressable onPress={() => Keyboard.dismiss()}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.container}
       >
-        <Text>Login</Text>
+        <Text>Login to AMS</Text>
 
         <TextInput
           style={styles.input}
@@ -91,7 +91,7 @@ const Login = () => {
         <Pressable title="Login" onPress={auth}><Text style={styles.button}>Login</Text></Pressable>
         {error ? <Text style={styles.error}>{error}</Text> : null}
       </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 
