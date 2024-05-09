@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 const Filter = () => {
   const navigation = useNavigation();
   const data = useSelector((state) => state.location.locations);
-  
+  const namesAndCodes = data.map(({ name, code }) => ({ name, code }));
 
   return (
     <View style={styles.container}>
@@ -29,7 +29,7 @@ const Filter = () => {
       <Sizes />
 
       {/* Кнопка для пошуку */}
-      <Pressable onPress={() => navigation.navigate("ShopStuf")}>
+      <Pressable onPress={() => navigation.navigate("ShopStuf", namesAndCodes)}>
         <Text>Search items</Text>
       </Pressable>
     </View>

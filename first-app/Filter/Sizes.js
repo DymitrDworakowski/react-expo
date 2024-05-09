@@ -44,7 +44,7 @@ const Sizes = () => {
     label: type,
     value: type,
   }));
-  const size = useSelector((state) => state.filter.size);
+  // const size = useSelector((state) => state.filter.size);
   return (
     <View>
       <Text>Rozmiar</Text>
@@ -54,7 +54,7 @@ const Sizes = () => {
           label: item.label,
           value: item.value,
         }))}
-        value={size}
+        // value={size}
       />
     </View>
   );

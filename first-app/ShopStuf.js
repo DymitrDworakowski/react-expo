@@ -12,63 +12,64 @@ import axios from "axios";
 import Img from "./Img";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
+import { stufSlice } from "./redux/slice";
 
 const ShopStuf = () => {
   const navigation = useNavigation();
   const token = useSelector((state) => state.auth.token);
   const route = useRoute();
   const { code, name } = route.params;
-  const [salonStuf, setSalonStuf] = useState([]);
+  // const [salonStuf, setSalonStuf] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
 
   const producer = useSelector((state) => state.filter.producers);
-  const category = useSelector((state) => state.filter.category);
+  const category = useSelector((state) => state.filter.categories);
   const sex = useSelector((state) => state.filter.sexList);
-  const size = useSelector((state) => state.filter.size);
-  const type = useSelector((state) => state.filter.type);
-
-  // const requestData = {
-  //   pageNo: page,
-  //   locationCode: code,
-  //   availabilityType: "inSales",
-  //   withPhotos: false,
-  //   withActiveDiscounts: false,
-  //   name: "",
-  //   price: { from: 0, to: 0 },
-  //   commodityGroup: "",
-  //   categories: [],
-  //   producers: [],
-  //   sexList: [],
-  //   sizes: [],
-  // };
+  const size = useSelector((state) => state.filter.sizes);
+  const type = useSelector((state) => state.filter.commodityGroup);
+  const salonStuf = useSelector((state) => state.stuf.salonStuf);
+  const dispatch = useDispatch();
 
   const requestData = {
     pageNo: page,
-    locationCode: "W13",
+    locationCode: code,
     availabilityType: "inSales",
     withPhotos: false,
     withActiveDiscounts: false,
     name: "",
     price: { from: 0, to: 0 },
-    commodityGroup: type,
-    categories: category,
+    commodityGroup: "",
+    categories: [null],
     producers: producer,
-    sexList: sex,
-    sizes: size,
+    sexList: [null],
+    sizes: [null],
   };
+
+  // const requestData = {
+  //   pageNo: page,
+  //   locationCode: 'W13',
+  //   availabilityType: "inSales",
+  //   withPhotos: false,
+  //   withActiveDiscounts: false,
+  //   name: "",
+  //   price: { from: 0, to: 0 },
+  //   commodityGroup: type,
+  //   categories: category,
+  //   producers: producer,
+  //   sexList: sex,
+  //   sizes: size,
+  // };
+
+  console.log(requestData);
 
   useEffect(() => {
     fetchStuf();
 
     navigation.setOptions({
       headerLeft: () => (
-        <Button
-          onPress={() => navigation.goBack()}
-          title="Back"
-          color="#000"
-        />
+        <Button onPress={() => navigation.goBack()} title="Back" color="#000" />
       ),
       headerRight: () => (
         <View style={styles.headerButtons}>
@@ -96,9 +97,11 @@ const ShopStuf = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        setSalonStuf([...salonStuf, ...response.data.products]);
+        dispatch(
+          stufSlice.actions.setStuf([...salonStuf, ...response.data.products])
+        );
         setLoading(false);
-        setPage((prewPage) => prewPage + 1); // Після отримання даних оновіть сторінку
+        setPage((prevPage) => prevPage + 1); // Після отримання даних оновіть сторінку
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -106,7 +109,6 @@ const ShopStuf = () => {
         setLoading(false);
       });
   };
-
   const handleScroll = (event) => {
     const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
     const isCloseToBottom =
@@ -121,10 +123,9 @@ const ShopStuf = () => {
       <Text style={styles.fixedText}>
         {code} {name}
       </Text>
+      <Button title="Filtering" onPress={() => useEffect()} />
 
-   
       <ScrollView onScroll={handleScroll} scrollEventThrottle={300}>
-       
         {salonStuf.length > 0 ? (
           salonStuf.map(
             ({ idModCol, producer, indexes, category, producerModel }) => (
@@ -181,7 +182,6 @@ const ShopStuf = () => {
                         Size: {indexes.map(({ size }) => size).join(", ")}
                       </Text>
                     </View>
-                    
                   );
                 })}
               </Pressable>
@@ -192,12 +192,12 @@ const ShopStuf = () => {
             <Text>Loading...</Text>
           </View>
         )}
-    
+
         {loading && <ActivityIndicator style={styles.loadingIndicator} />}
         {error && <Text style={styles.error}>{error}</Text>}
       </ScrollView>
-     </>
-    );
+    </>
+  );
 };
 
 const styles = StyleSheet.create({

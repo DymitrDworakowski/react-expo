@@ -69,7 +69,20 @@ export const filterSlice = createSlice({
       state.sizes = [action.payload] || [];
     },
     setTypes: (state, action) => {
-      state.commodityGroup = [action.payload] || [];
+      state.commodityGroup = action.payload || '';
     },
   },
 });
+
+export const stufSlice = createSlice({
+  name: "stuf",
+  initialState:{
+    salonStuf: [],
+  },
+  reducers: {
+    setStuf: (state, action) => {
+      state.salonStuf = action.payload || [];
+    },
+  },
+}
+);
