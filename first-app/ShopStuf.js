@@ -34,7 +34,7 @@ const ShopStuf = () => {
 
   const requestData = {
     pageNo: page,
-    locationCode: code,
+    locationCode: "W13",
     availabilityType: "inSales",
     withPhotos: false,
     withActiveDiscounts: false,
@@ -97,8 +97,10 @@ const ShopStuf = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
+        console.log(response.data.products)
         dispatch(
           stufSlice.actions.setStuf([...salonStuf, ...response.data.products])
+          
         );
         setLoading(false);
         setPage((prevPage) => prevPage + 1); // Після отримання даних оновіть сторінку
@@ -123,7 +125,7 @@ const ShopStuf = () => {
       <Text style={styles.fixedText}>
         {code} {name}
       </Text>
-      <Button title="Filtering" onPress={() => useEffect()} />
+      <Button title="Filtering" onPress={() => fetchStuf()} />
 
       <ScrollView onScroll={handleScroll} scrollEventThrottle={300}>
         {salonStuf.length > 0 ? (
