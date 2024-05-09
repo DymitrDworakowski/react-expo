@@ -5,8 +5,8 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
+  Pressable,
   Button,
-  TouchableOpacity,
 } from "react-native";
 import axios from "axios";
 import Img from "./Img";
@@ -22,7 +22,6 @@ const ShopStuf = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
-
 
   const producer = useSelector((state) => state.filter.producers);
   const category = useSelector((state) => state.filter.category);
@@ -47,7 +46,7 @@ const ShopStuf = () => {
 
   const requestData = {
     pageNo: page,
-    locationCode: 'W13',
+    locationCode: "W13",
     availabilityType: "inSales",
     withPhotos: false,
     withActiveDiscounts: false,
@@ -65,7 +64,11 @@ const ShopStuf = () => {
 
     navigation.setOptions({
       headerLeft: () => (
-        <Button onPress={() => navigation.goBack()} title="Back" color="#000" />
+        <Button
+          onPress={() => navigation.goBack()}
+          title="Back"
+          color="#000"
+        />
       ),
       headerRight: () => (
         <View style={styles.headerButtons}>
@@ -77,9 +80,7 @@ const ShopStuf = () => {
             color="#000"
           />
           <Button
-            onPress={() =>
-              navigation.navigate("Filter")
-            }
+            onPress={() => navigation.navigate("Filter")}
             title="Filtr"
             color="#000"
           />
@@ -95,7 +96,6 @@ const ShopStuf = () => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        
         setSalonStuf([...salonStuf, ...response.data.products]);
         setLoading(false);
         setPage((prewPage) => prewPage + 1); // Після отримання даних оновіть сторінку
@@ -117,15 +117,18 @@ const ShopStuf = () => {
   };
 
   return (
-    <View>
+    <>
       <Text style={styles.fixedText}>
         {code} {name}
       </Text>
+
+   
       <ScrollView onScroll={handleScroll} scrollEventThrottle={300}>
+       
         {salonStuf.length > 0 ? (
           salonStuf.map(
             ({ idModCol, producer, indexes, category, producerModel }) => (
-              <TouchableOpacity
+              <Pressable
                 key={idModCol}
                 onPress={() =>
                   navigation.navigate("Product", {
@@ -137,54 +140,51 @@ const ShopStuf = () => {
                   })
                 }
               >
-                <View style={styles.container}>
-                  {Array.from(
-                    new Set(
-                      indexes.map(
-                        ({ shortName, price }) =>
-                          `${shortName}-${price.salePrice}-${price.ecomPrice}-${price.cataloguePrice}`
-                      )
+                {Array.from(
+                  new Set(
+                    indexes.map(
+                      ({ shortName, price }) =>
+                        `${shortName}-${price.salePrice}-${price.ecomPrice}-${price.cataloguePrice}`
                     )
-                  ).map((uniqueShortNameAndPrice) => {
-                    const [shortName, salePrice, ecomPrice, cataloguePrice] =
-                      uniqueShortNameAndPrice.split("-");
-                    return (
-                      <View key={uniqueShortNameAndPrice} style={styles.item}>
-                        <Text>{shortName}</Text>
-                        <Text>Producent: {producer}</Text>
-                        <Img idModCol={idModCol} token={token} />
-                        <Text>Model: {producerModel} </Text>
-                        <Text>{category}</Text>
-                        <Text>Cena sal: {salePrice}</Text>
-                        <Text>Cena ecom: {ecomPrice}</Text>
-                        <Text>Cena katalogowa:{cataloguePrice}</Text>
-                        <Text>
-                          {indexes.map(({ stock }) =>
-                            stock.inStore === 0 ? (
-                              <Text key={stock.inStore}>
-                                Stany {code} {name} : Towar nie dostępny
-                              </Text>
-                            ) : (
-                              <Text key={stock.inStore}>
-                                Stany w salonie {stock.inStore}
-                              </Text>
-                            )
-                          )}
-                        </Text>
-                        <Text>
-                          Stany calkowite:
-                          {indexes.map(({ stock }) => stock.inSale)}
-                        </Text>
-                      </View>
-                    );
-                  })}
-                  <View style={styles.item}>
-                    <Text>
-                      Size: {indexes.map(({ size }) => size).join(", ")}
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
+                  )
+                ).map((uniqueShortNameAndPrice) => {
+                  const [shortName, salePrice, ecomPrice, cataloguePrice] =
+                    uniqueShortNameAndPrice.split("-");
+                  return (
+                    <View key={uniqueShortNameAndPrice} style={styles.item}>
+                      <Text>{shortName}</Text>
+                      <Text>Producent: {producer}</Text>
+                      <Img idModCol={idModCol} token={token} />
+                      <Text>Model: {producerModel} </Text>
+                      <Text>{category}</Text>
+                      <Text>Cena sal: {salePrice}</Text>
+                      <Text>Cena ecom: {ecomPrice}</Text>
+                      <Text>Cena katalogowa:{cataloguePrice}</Text>
+                      <Text>
+                        {indexes.map(({ stock }, index) =>
+                          stock.inStore === 0 ? (
+                            <Text key={`${index}-${stock.inStore}`}>
+                              Stany {code} {name} : Towar nie dostępny
+                            </Text>
+                          ) : (
+                            <Text key={`${index}-${stock.inStore}`}>
+                              Stany w salonie {stock.inStore}
+                            </Text>
+                          )
+                        )}
+                      </Text>
+                      <Text>
+                        Stany calkowite:
+                        {indexes.map(({ stock }) => stock.inSale)}
+                      </Text>
+                      <Text>
+                        Size: {indexes.map(({ size }) => size).join(", ")}
+                      </Text>
+                    </View>
+                    
+                  );
+                })}
+              </Pressable>
             )
           )
         ) : (
@@ -192,12 +192,12 @@ const ShopStuf = () => {
             <Text>Loading...</Text>
           </View>
         )}
-
+    
         {loading && <ActivityIndicator style={styles.loadingIndicator} />}
         {error && <Text style={styles.error}>{error}</Text>}
       </ScrollView>
-    </View>
-  );
+     </>
+    );
 };
 
 const styles = StyleSheet.create({

@@ -1,13 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// const initialState = {
-//   login: "ams_dd",
-//   password: "123Qwe",
-//   deviceId: "",
-//   appVersion: "",
-//   token: "",
-// };
-
 export const authSlice = createSlice({
   name: "auth",
   initialState:{
@@ -52,10 +44,7 @@ export const locationSlice = createSlice({
 
 export const filterSlice = createSlice({
   name: "filter",
-  initialState:{
-    // pageNo: '',
-    // locationCode: '',
-    // availabilityType: "inSales",
+  initialState: {
     withPhotos: false,
     withActiveDiscounts: false,
     name: "",
@@ -68,19 +57,19 @@ export const filterSlice = createSlice({
   },
   reducers: {
     setProducers: (state, action) => {
-      state.producers = action.payload;
+      state.producers = [action.payload] || [];
     },
     setCategories: (state, action) => {
-      state.categories = action.payload;
+      state.categories = [action.payload]|| [];
     },
     setSexList: (state, action) => {
-      state.sexList = action.payload;
+      state.sexList = [action.payload] || [];
     },
     setSizes: (state, action) => {
-      state.sizes = action.payload;
+      state.sizes = [action.payload] || [];
     },
     setTypes: (state, action) => {
-      state.commodityGroup = action.payload
+      state.commodityGroup = [action.payload] || [];
     },
   },
 });

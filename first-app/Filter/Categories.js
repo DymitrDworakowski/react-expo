@@ -46,6 +46,8 @@ const Categories = () => {
     value: category,
   }));
 
+  const category = useSelector((state) => state.filter.category);
+
   return (
     <View>
       <Text>Kategoria</Text>
@@ -57,6 +59,7 @@ const Categories = () => {
           label: item.label,
           value: item.value,
         }))}
+        value={category}
       />
     </View>
   );

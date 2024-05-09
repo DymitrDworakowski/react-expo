@@ -44,7 +44,8 @@ const SexList = () => {
     label: type,
     value: type,
   }));
-
+  const sex = useSelector((state) => state.filter.sexList);
+  
   return (
     <View>
       <Text>Płeć</Text>
@@ -56,6 +57,7 @@ const SexList = () => {
           label: item.label,
           value: item.value,
         }))}
+        value={sex}
       />
     </View>
   );

@@ -46,6 +46,8 @@ const Producers = () => {
     value: type,
   }));
 
+  const producer = useSelector((state) => state.filter.producers);
+
   return (
     <View>
       <Text>Producent</Text>
@@ -55,6 +57,7 @@ const Producers = () => {
           label: item.label,
           value: item.value,
         }))}
+        value={producer}
       />
     </View>
   );

@@ -46,6 +46,8 @@ const Types = () => {
     value: type,
   }));
 
+  
+
   return (
     <View>
       <Text>Typ</Text>
@@ -55,6 +57,7 @@ const Types = () => {
           label: item.label,
           value: item.value,
         }))}
+        
       />
     </View>
   );
